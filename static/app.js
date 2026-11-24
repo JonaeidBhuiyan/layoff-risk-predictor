@@ -13,7 +13,7 @@
 // Leave empty when the frontend is served by the same FastAPI app.
 // For a separately hosted frontend, set this to the backend origin,
 // for example: https://your-api.onrender.com (without a trailing slash).
-const API_BASE_URL = '';
+const API_BASE_URL = 'https://layoff-risk-predictor.onrender.com';
 const HISTORY_KEY = 'workforce-intelligence-layoff-history-v1';
 const MAX_HISTORY_ITEMS = 12;
 
