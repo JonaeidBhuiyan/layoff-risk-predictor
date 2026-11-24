@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f7f6f0">
+    <meta name="description" content="Explore an estimated workforce layoff-risk score using company, market, financial, and AI-adoption indicators.">
+    <title>Workforce Intelligence — Layoff Risk Predictor</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="/static/app.js" defer></script>
+</head>
+<body id="top">
+    <a class="skip-link" href="#predictor">Skip to predictor</a>
+
+    <!-- Navigation -->
+    <header class="topbar">
+        <div class="topbar-inner">
+            <a class="brand" href="/" aria-label="Workforce Intelligence home">
+                <span class="brand-mark" aria-hidden="true">W</span>
+                <span class="brand-copy">
+                    <strong>Workforce</strong>
+                    <small>INTELLIGENCE</small>
+                </span>
+            </a>
+
+            <nav class="top-actions" aria-label="Main navigation">
+                <a href="#predictor">Predictor</a>
+                <a href="#history">History</a>
+                <a href="#guide">Methodology</a>
+            </nav>
+
+            <div class="header-status" title="Connection to the prediction API">
+                <span class="status-dot" id="connection-dot"></span>
+                <span id="connection-label">Checking model</span>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero -->
+        <section class="hero">
+            <div class="hero-inner">
+                <div class="hero-copy">
+                    <p class="eyebrow"><span class="eyebrow-line"></span> Workforce analytics · Machine learning</p>
+                    <h1>Understand the signals<br>behind workforce <em>risk.</em></h1>
+                    <p class="hero-lead">
+                        Explore how business performance, economic conditions, workforce indicators,
+                        and AI adoption relate to an estimated layoff-risk score.
+                    </p>
+                    <div class="hero-actions">
+                        <a class="btn btn-primary" href="#predictor">Explore a scenario <span aria-hidden="true">↗</span></a>
+                        <a class="text-link" href="#guide">How to read the estimate <span aria-hidden="true">↓</span></a>
+                    </div>
+                    <p class="hero-note"><span aria-hidden="true">ⓘ</span> An exploratory research tool — not a forecast or employment decision system.</p>
+                </div>
+
+                <div class="hero-art" aria-label="Model overview: 20 user inputs and 8 what-if comparisons">
+                    <div class="art-orbit orbit-one"></div>
+                    <div class="art-orbit orbit-two"></div>
+                    <div class="art-card">
+                        <div class="art-card-top">
+                            <span>MODEL OVERVIEW</span>
+                            <span class="art-card-mark">WI / 01</span>
+                        </div>
+                        <div class="art-main-stat">
+                            <strong>20</strong>
+                            <span>user-provided<br>indicators</span>
+                        </div>
+                        <div class="art-rule"></div>
+                        <div class="art-metrics">
+                            <div><span class="metric-index">01</span><span>Company &amp; economy</span><i class="metric-bar bar-a"></i></div>
+                            <div><span class="metric-index">02</span><span>People &amp; operations</span><i class="metric-bar bar-b"></i></div>
+                            <div><span class="metric-index">03</span><span>AI &amp; performance</span><i class="metric-bar bar-c"></i></div>
+                        </div>
+                        <div class="art-card-bottom"><span>SCENARIO EXPLORATION</span><span>8 WHAT-IF CHECKS</span></div>
+                    </div>
+                    <span class="art-caption">A clearer view of complex signals.</span>
+                </div>
+            </div>
+            <div class="hero-bottomline"><span>01 / ANALYZE</span><span>INPUTS → MODEL → ESTIMATE</span></div>
+        </section>
+
+        <!-- Predictor workspace -->
+        <section class="workspace" id="predictor" aria-label="Layoff risk predictor">
+            <div class="workspace-heading">
+                <div>
+                    <p class="eyebrow"><span class="eyebrow-line"></span> Analysis workspace</p>
+                    <h2>Build your scenario.</h2>
+                </div>
+                <p class="workspace-intro">Adjust the indicators below. The model will return a score on a 0–100 scale.</p>
+            </div>
+
+            <div class="layout">
+                <!-- Input form -->
+                <section class="card form-card">
+                    <div class="card-head">
+                        <div>
+                            <p class="card-kicker">01 / INPUT PARAMETERS</p>
+                            <h3>Company profile</h3>
+                            <p class="muted">Use a preset or customize each indicator.</p>
+                        </div>
+                        <span class="step-badge">20 INPUTS</span>
+                    </div>
+
+                    <div class="preset-area">
+                        <div class="preset-heading">
+                            <span>START WITH A SCENARIO</span>
+                            <small>Illustrative starting values</small>
+                        </div>
+                        <div class="presets" role="group" aria-label="Example scenarios">
+                            <button type="button" class="chip" data-preset="healthy"><span class="chip-symbol">↗</span> Healthy</button>
+                            <button type="button" class="chip" data-preset="pressure"><span class="chip-symbol">◈</span> Under pressure</button>
+                            <button type="button" class="chip" data-preset="disrupted"><span class="chip-symbol">✳</span> AI disrupted</button>
+                        </div>
+                    </div>
+
+                    <form id="form" novalidate>
+                        <div id="form-sections" aria-live="polite">
+                            <div class="loading-state"><span class="spinner spinner-dark" aria-hidden="true"></span><p>Loading model options…</p></div>
+                        </div>
+
+                        <div class="form-error-wrap">
+                            <p id="form-error" class="error" role="alert" hidden></p>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" id="reset-btn" class="btn btn-secondary">Reset values</button>
+                            <button type="submit" id="submit-btn" class="btn btn-primary" disabled>
+                                <span class="btn-label">Predict risk</span>
+                                <span class="spinner" aria-hidden="true"></span>
+                                <span class="btn-arrow" aria-hidden="true">↗</span>
+                            </button>
+                        </div>
+                        <p class="form-footnote">Your inputs are used for this analysis. Recent results are stored locally in this browser.</p>
+                    </form>
+                </section>
+
+                <!-- Results and history -->
+                <aside class="side">
+                    <section class="result-card" aria-live="polite" aria-atomic="true">
+                        <div id="result-empty" class="empty">
+                            <div class="empty-symbol" aria-hidden="true"><span>↗</span></div>
+                            <p class="card-kicker">02 / MODEL OUTPUT</p>
+                            <h3>Your analysis<br>will appear here.</h3>
+                            <p class="empty-copy">Complete the company profile and run a prediction to reveal the estimated score and scenario sensitivity.</p>
+                            <div class="empty-status"><span class="status-dot"></span> AWAITING INPUT</div>
+                        </div>
+
+                        <div id="result-body" class="result-body" hidden>
+                            <div class="result-topline">
+                                <div>
+                                    <p class="card-kicker">02 / MODEL OUTPUT</p>
+                                    <h3>Risk assessment</h3>
+                                </div>
+                                <span class="complete-pill"><span class="status-dot"></span> Complete</span>
+                            </div>
+
+                            <div class="score-block">
+                                <p class="score-label">Estimated layoff-risk score</p>
+                                <div class="gauge" id="gauge" role="img" aria-label="Risk score not yet available">
+                                    <div class="gauge-inner">
+                                        <strong id="score-value">—</strong>
+                                        <span>/ 100</span>
+                                    </div>
+                                </div>
+                                <div class="level" id="risk-level">—</div>
+                                <p class="result-caption">Model estimate based on the submitted indicators.</p>
+                            </div>
+
+                            <div class="result-separator"></div>
+
+                            <div class="drivers">
+                                <div class="drivers-heading">
+                                    <div>
+                                        <p class="card-kicker">WHAT-IF COMPARISON</p>
+                                        <h4>What moves the score?</h4>
+                                    </div>
+                                    <span class="drivers-count">8 CHECKS</span>
+                                </div>
+                                <p class="drivers-intro">Each value shows the score change when one indicator is adjusted from the baseline.</p>
+                                <ul id="drivers-list"></ul>
+                            </div>
+
+                            <div class="result-actions">
+                                <button type="button" class="btn btn-result" id="copy-btn">Copy summary</button>
+                                <button type="button" class="btn btn-result" id="print-btn">Print report</button>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="card history-card" id="history">
+                        <div class="history-heading">
+                            <div>
+                                <p class="card-kicker">03 / YOUR SESSIONS</p>
+                                <h3>Recent analyses</h3>
+                            </div>
+                            <button type="button" id="clear-history" class="text-button">Clear all</button>
+                        </div>
+                        <div id="history-list" class="history-list">
+                            <div class="history-empty"><span aria-hidden="true">◷</span><p>No predictions yet. Your recent analyses will be saved here.</p></div>
+                        </div>
+                        <button type="button" id="export-btn" class="btn btn-export"><span aria-hidden="true">↓</span> Export history CSV</button>
+                    </section>
+                </aside>
+            </div>
+        </section>
+
+        <!-- Methodology and interpretation -->
+        <section class="guide-section" id="guide">
+            <div class="guide-heading">
+                <div>
+                    <p class="eyebrow"><span class="eyebrow-line"></span> A practical guide</p>
+                    <h2>Read the estimate<br>with <em>context.</em></h2>
+                </div>
+                <p class="guide-intro">Use the model to explore hypothetical conditions—not to predict an individual employee’s future or make real-world employment decisions.</p>
+            </div>
+
+            <div class="guide-grid">
+                <article class="guide-item">
+                    <span class="guide-number">01</span>
+                    <h3>Describe the business</h3>
+                    <p>Provide the company’s industry, region, department, economic environment, and operating model.</p>
+                </article>
+                <article class="guide-item">
+                    <span class="guide-number">02</span>
+                    <h3>Explore the indicators</h3>
+                    <p>Adjust financial, workforce, productivity, and AI-adoption values. Try one scenario at a time.</p>
+                </article>
+                <article class="guide-item">
+                    <span class="guide-number">03</span>
+                    <h3>Interpret responsibly</h3>
+                    <p>Review the score and what-if comparisons while remembering that model sensitivity is not proof of causation.</p>
+                </article>
+            </div>
+
+            <div class="risk-scale-card">
+                <div class="risk-scale-heading">
+                    <div><p class="card-kicker">APPLICATION INTERPRETATION</p><h3>Risk score bands</h3></div>
+                    <p>These categories are defined by this application.</p>
+                </div>
+                <div class="risk-scale-items">
+                    <div class="risk-band band-low"><span class="band-swatch"></span><strong>Low</strong><small>0–19</small></div>
+                    <div class="risk-band band-moderate"><span class="band-swatch"></span><strong>Moderate</strong><small>20–39</small></div>
+                    <div class="risk-band band-high"><span class="band-swatch"></span><strong>High</strong><small>40–64</small></div>
+                    <div class="risk-band band-critical"><span class="band-swatch"></span><strong>Critical</strong><small>65–100</small></div>
+                </div>
+            </div>
+
+            <div class="disclaimer">
+                <span class="disclaimer-icon" aria-hidden="true">ⓘ</span>
+                <p><strong>Important limitation.</strong> The model returns a regression score scaled from 0 to 100, not a calibrated probability of layoffs. The risk bands are application-defined, and what-if comparisons are hypothetical model responses—not causal effects. This tool should not be used as the sole basis for employment, financial, or business decisions.</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-main">
+            <a class="brand footer-brand" href="/" aria-label="Workforce Intelligence home">
+                <span class="brand-mark" aria-hidden="true">W</span>
+                <span class="brand-copy"><strong>Workforce</strong><small>INTELLIGENCE</small></span>
+            </a>
+            <p>Exploratory machine-learning project</p>
+            <a class="back-top" href="#top">Back to top ↑</a>
+        </div>
+        <div class="footer-bottom"><span>© 2026 Workforce Intelligence</span><span>Built for research and scenario exploration</span></div>
+    </footer>
+</body>
+</html>
