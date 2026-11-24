@@ -1,5 +1,5 @@
 from __future__ import annotations
-
+from fastapi.middleware.cors import CORSMiddleware
 from pathlib import Path
 from typing import Optional
 import logging
@@ -41,7 +41,15 @@ app = FastAPI(
     version="1.2.0",
 )
 
-
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "https://layoff-risk-predictor-1.onrender.com",
+    ],
+    allow_credentials=False,
+    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_headers=["Content-Type"],
+)
 # ============================================================
 # 3. LOAD PREPROCESSOR AND XGBOOST MODEL
 # ============================================================
